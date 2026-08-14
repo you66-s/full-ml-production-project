@@ -7,6 +7,9 @@ services:
       - "8000:8000"
     depends_on:
       - db
+      - feast
+    volumes:
+      - ./services/feast/repo:/repo
   db:
     image: postgres:16
     env_file:
@@ -47,6 +50,19 @@ services:
     volumes:
       - ./services/prefect:/opt/prefect/flows
       - ./core:/opt/prefect/flows/core # monter les scripts du bd
-      - ./data:/data:ro    # Rendre les CSV accessibles au conteneur Prefect
+      - ./data:/data    # Rendre les CSV accessibles au conteneur Prefect
+      - ./services/feast/repo:/repo   # Accès à Feast
+
+  feast:
+    build: 
+      context:  ./services/feast
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+      - prefect-server
+    environment:
+      FEAST_USAGE: "FALSE"
+    volumes:
+      - ./services/feast/repo:/repo
 volumes:
   pgdata:
