@@ -1,0 +1,23 @@
+project: streamflow
+provider: local
+registry: registry.db
+
+offline_store:
+  type: postgres
+  host: db
+  port: 5432
+  database: ml-course
+  db_schema: public
+  user: youssef
+  password: youssef
+
+online_store:
+  type: postgres
+  host: db
+  port: 5432
+  database: ml-course
+  db_schema: public
+  user: youssef
+  password: youssef
+
+entity_key_serialization_version: 3
