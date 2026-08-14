@@ -222,3 +222,5 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+services/feast/repo/debug_online_features.py
+services/feast/repo/registry.db
