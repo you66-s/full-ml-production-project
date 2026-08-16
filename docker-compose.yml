@@ -18,8 +18,7 @@ services:
       - ./db/init:/docker-entrypoint-initdb.d   # Monter les scripts pour initialiser la schéma - L'image officielle PostgreSQL possède un script de démarrage qui exécute automatiquement tous les fichiers présents dans ce dossier uniquement lors de la première création de la base de données.
       - pgdata:/var/lib/postgresql/data
     ports:
-      - "5432:5432"
-  
+      - "5432:5432" 
   prefect-server:
     build: 
       context: ./services/prefect
@@ -52,7 +51,6 @@ services:
       - ./core:/opt/prefect/flows/core # monter les scripts du bd
       - ./data:/data    # Rendre les CSV accessibles au conteneur Prefect
       - ./services/feast/repo:/repo   # Accès à Feast
-
   feast:
     build: 
       context:  ./services/feast
@@ -64,5 +62,13 @@ services:
       FEAST_USAGE: "FALSE"
     volumes:
       - ./services/feast/repo:/repo
+  mlflow:
+    image: ghcr.io/mlflow/mlflow:v2.16.0
+    command: mlflow server --backend-store-uri sqlite:///mlartifacts/mlflow.db --default-artifact-root mlflow-artifacts:/ --host 0.0.0.0 --port 5000 --serve-artifacts --artifacts-destination /mlartifacts/artifacts
+    volumes:
+      - ./mlartifacts:/mlartifacts
+    ports:
+      - "5000:5000"
 volumes:
   pgdata:
+  mlartifacts:
