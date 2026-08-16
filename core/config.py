@@ -9,6 +9,9 @@ class Settings(BaseSettings):
     
     AS_OF: str
     SEED_DIR: str
+
+    MLFLOW_TRACKING_URI: str
+    MLFLOW_EXPERIMENT: str
     
     
     class Config:
