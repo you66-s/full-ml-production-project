@@ -8,8 +8,12 @@ services:
     depends_on:
       - db
       - feast
+      - mlflow
+    env_file:
+      - .env
     volumes:
       - ./services/feast/repo:/repo
+      - ./core:/app/core
   db:
     image: postgres:16
     env_file:
@@ -51,6 +55,7 @@ services:
       - ./core:/opt/prefect/flows/core # monter les scripts du bd
       - ./data:/data    # Rendre les CSV accessibles au conteneur Prefect
       - ./services/feast/repo:/repo   # Accès à Feast
+      - ./reports:/reports   
   feast:
     build: 
       context:  ./services/feast
@@ -69,6 +74,28 @@ services:
       - ./mlartifacts:/mlartifacts
     ports:
       - "5000:5000"
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: mlops-prometheus
+    volumes:
+      - ./services/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+    ports:
+      - "9090:9090"
+    depends_on:
+      - api
+  grafana:
+    image: grafana/grafana:latest
+    container_name: mlops-grafana
+    volumes:
+      - ./services/grafana/provisioning:/etc/grafana/provisioning
+      - grafana-data:/var/lib/grafana
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
 volumes:
   pgdata:
   mlartifacts:
+  grafana-data:

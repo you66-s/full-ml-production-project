@@ -286,7 +286,7 @@ def build_month_snapshot(as_of: str):
     
     return f"snapshots stamped for {as_of}"
 @flow(name="ingest_month")
-def ingest_month_flow(seed_dir: str = "/data/seeds/month_000", as_of: str = "2024-01-31"):
+def ingest_month_flow(seed_dir: str = "/data/seeds/month_001", as_of: str = "2022-02-28"):
     upsert_csv("users",            f"{seed_dir}/users.csv",            ["user_id"])
     upsert_csv("subscriptions",    f"{seed_dir}/subscriptions.csv",    ["user_id"])
     upsert_csv("usage_agg_30d",    f"{seed_dir}/usage_agg_30d.csv",    ["user_id"])

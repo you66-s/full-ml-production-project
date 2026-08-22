@@ -13,6 +13,8 @@ class Settings(BaseSettings):
     MLFLOW_TRACKING_URI: str
     MLFLOW_EXPERIMENT: str
     
+    EVIDENTLY_REPORT_DIR: str
+    FEAST_REPO: str
     
     class Config:
         env_file = ".env"
