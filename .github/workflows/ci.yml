@@ -45,7 +45,7 @@ on:
             docker compose logs --no-color > compose-logs.txt || true
             exit 1
         - name: Dump logs (always)
-          if always()
+          if: always()
           run: |
             docker compose logs --no-color > compose-logs.txt || true
         - name: Upload logs artifact
