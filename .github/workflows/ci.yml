@@ -30,6 +30,13 @@ jobs:
         run: |
           docker version
           docker compose version
+      - name: Create .env for CI
+        run: |
+          cat <<EOF > .env
+          POSTGRES_USER=ci_user
+          POSTGRES_PASSWORD=ci_password
+          POSTGRES_DB=ci_db
+          EOF
       - name: Build and start core stack
         run: |
           docker compose up -d --build db feast mlflow api
